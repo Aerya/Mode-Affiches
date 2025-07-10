@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Mode Affiches Responsive avec largeur dynamique
-// @version      4.4
+// @version      4.5
 // @description  Affichage en grille responsive avec configuration dynamique de la largeur des affiches et menu interactif
 // @author       Aerya
 // @match        https://site.extension/*
@@ -105,7 +105,9 @@
 
   window.addEventListener('load', () => {
     createConfigDropdown();
-    const section = getSection(); if (!isSectionActive(section)) return;
+    let section = getSection();
+    if (!section) section = 'MOVIE';
+    if (!isSectionActive(section)) return;
 
     const rows = [...document.querySelectorAll('tr.parent')];
     if (!rows.length) return;
