@@ -1,4 +1,4 @@
-Userscript pour transformer la liste de releases sur unfr.pw en une galerie d'affiches responsive, avec menu de configuration dynamique.
+Userscript pour transformer la liste de releases sur un indexeur privé en une galerie d'affiches responsive, avec menu de configuration dynamique.
 
 ![Menu](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/1.png)
 
