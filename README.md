@@ -4,7 +4,6 @@ Userscript pour transformer la liste de releases sur un indexeur privé en une g
 
 📦 Installation
 
-<<<<<<< HEAD
 1. Installez Tampermonkey (ou équivalent : Violentmonkey, Greasemonkey)
 2. Créez un nouveau script et copiez-y l'intégralité du contenu de mode_affiches.js
 3. Sauvegardez et activez le script
