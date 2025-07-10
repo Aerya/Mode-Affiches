@@ -1,6 +1,6 @@
 Userscript pour transformer la liste de releases sur unfr.pw en une galerie d'affiches responsive, avec menu de configuration dynamique.
 
-https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/1.png
+![Menu](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/1.png)
 
 📦 Installation
 
@@ -21,3 +21,11 @@ Nettoyage des titres pour Films & Séries ; titres bruts pour Mangas, Musiques 
 ⚙️ Configuration
 Afin de préserver l'identité du site, le script n'est pas publié avec son URL.
 Modifier le paramètres Match URL en haut du fichier avec l'URL du site : https://site.extension/*
+
+![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/2.png)
+
+![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/3.png)
+
+![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/4.png)
+
+![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/5.png)
