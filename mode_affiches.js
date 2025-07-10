@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name         Mode Affiches Responsive avec largeur dynamique
-// @version      5.0
+// @name         Mode Affiches Alternatif Responsive avec largeur dynamique
+// @version      5.3
 // @date         10.07.25
 // @description  Affichage en grille responsive avec configuration dynamique de la largeur des affiches et menu interactif
 // @author       Aerya
@@ -12,30 +12,47 @@
 (() => {
   'use strict';
 
+  const CATEGORIES = [
+    { key: 'MOVIE', label: 'Films' },
+    { key: 'TV', label: 'Séries' },
+    { key: 'MANGA', label: 'Mangas' },
+    { key: 'ZIK', label: 'Musiques' },
+    { key: 'XXX', label: 'XXX' }
+  ];
+
+  const STORAGE_KEY = 'afficheModeSections';
   const STORAGE_FULLWIDTH_KEY = 'afficheModeFullWidth';
   const STORAGE_MINWIDTH_KEY = 'afficheMinWidth';
 
-  function createConfigDropdown() {
-    const refBtn = document.querySelector('.btn-synopsis, .refus');
-    if (!refBtn) return;
+  const getSection = () => new URLSearchParams(window.location.search).get('section') || '';
+  const isSectionActive = sec => JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]').includes(sec);
+  const saveConfig = arr => localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+  const getStoredConfig = () => JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 
-    const parent = refBtn.closest('.d-flex') || refBtn.closest('.card-body');
-    if (!parent) return;
+  function createConfigDropdown() {
+    const referenceBlock = [...document.querySelectorAll('.d-flex.flex-wrap.justify-content-center.mb-2')]
+      .find(div => div.textContent.includes('Mode listing'));
+
+    if (!referenceBlock) return;
 
     const wrapper = document.createElement('div');
-    wrapper.style.position = 'relative';
-    wrapper.style.display = 'inline-block';
-    wrapper.style.marginLeft = '8px';
+    wrapper.className = 'd-flex flex-wrap justify-content-center mb-2';
+
+    const btnWrapper = document.createElement('div');
+    btnWrapper.style.position = 'relative';
+    btnWrapper.style.display = 'inline-block';
 
     const btn = document.createElement('button');
-    btn.textContent = 'Mode Affiches';
-    btn.className = 'btn btn-outline-secondary';
+    btn.textContent = '🎞 Mode Affiches';
+    btn.className = 'btn btn-outline-secondary my-1';
+    btn.type = 'button';
 
     const panel = document.createElement('div');
     Object.assign(panel.style, {
       position: 'absolute',
-      top: '100%',
-      left: '0',
+      top: 'calc(100% + 6px)',
+      left: '50%',
+      transform: 'translateX(-50%)',
       background: '#1c1c1c',
       color: '#fff',
       padding: '10px',
@@ -44,9 +61,35 @@
       display: 'none',
       minWidth: '200px',
       boxShadow: '0 2px 6px rgba(0,0,0,0.5)',
-      zIndex: 1000
+      zIndex: 10000,
+      textAlign: 'left'
     });
 
+    // Sections
+    const stored = new Set(getStoredConfig());
+    CATEGORIES.forEach(({ key, label }) => {
+      const lbl = document.createElement('label');
+      lbl.style.display = 'block';
+
+      const chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.value = key;
+      chk.checked = stored.has(key);
+      chk.style.marginRight = '6px';
+
+      chk.addEventListener('change', () => {
+        chk.checked ? stored.add(key) : stored.delete(key);
+        saveConfig(Array.from(stored));
+        location.reload();
+      });
+
+      lbl.append(chk, label);
+      panel.append(lbl);
+    });
+
+    panel.append(document.createElement('hr'));
+
+    // Pleine largeur
     const fwLbl = document.createElement('label');
     fwLbl.style.display = 'block';
     const fwChk = document.createElement('input');
@@ -60,6 +103,7 @@
     fwLbl.append(fwChk, ' Pleine largeur');
     panel.append(fwLbl);
 
+    // Largeur min
     const rangeLbl = document.createElement('label');
     rangeLbl.textContent = 'Largeur min affiche :';
     rangeLbl.style.display = 'block';
@@ -93,18 +137,23 @@
     });
 
     document.addEventListener('click', e => {
-      if (!wrapper.contains(e.target)) panel.style.display = 'none';
+      if (!btnWrapper.contains(e.target)) panel.style.display = 'none';
     });
 
-    wrapper.append(btn, panel);
-    parent.append(wrapper);
+    btnWrapper.append(btn, panel);
+    wrapper.appendChild(btnWrapper);
+    referenceBlock.insertAdjacentElement('afterend', wrapper);
   }
 
   window.addEventListener('load', () => {
-    createConfigDropdown();
+    let section = getSection();
+    if (!section) section = 'MOVIE';
+    if (!isSectionActive(section)) return;
 
     const cards = [...document.querySelectorAll('.card.affichet')];
     if (!cards.length) return;
+
+    createConfigDropdown();
 
     const gallery = document.createElement('div');
     gallery.id = 'afficheGallery';
@@ -168,7 +217,6 @@
       cont.appendChild(aEl);
       gallery.appendChild(cont);
 
-      // Cache la carte d’origine
       card.style.display = 'none';
       const wrapper = card.closest('.containert.article');
       if (wrapper) wrapper.style.display = 'none';
