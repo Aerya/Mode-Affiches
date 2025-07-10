@@ -1,9 +1,10 @@
-Userscript pour transformer la liste de releases sur unfr.pw en une galerie d'affiches responsive, avec menu de configuration dynamique.
+Userscript pour transformer la liste de releases sur un indexeur privé en une galerie d'affiches responsive, avec menu de configuration dynamique.
 
 ![Menu](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/1.png)
 
 📦 Installation
 
+<<<<<<< HEAD
 1. Installez Tampermonkey (ou équivalent : Violentmonkey, Greasemonkey)
 2. Créez un nouveau script et copiez-y l'intégralité du contenu de mode_affiches.js
 3. Sauvegardez et activez le script
@@ -19,7 +20,7 @@ Userscript pour transformer la liste de releases sur unfr.pw en une galerie d'af
  - Nettoyage des titres pour Films & Séries ; titres bruts pour Mangas, Musiques & XXX
 
 ⚙️ Configuration
-Afin de préserver l'identité du site, le script n'est pas publié avec son URL.
+
 Modifier le paramètres Match URL en haut du fichier avec l'URL du site : https://site.extension/*
 
 ![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/2.png)
