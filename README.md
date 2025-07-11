@@ -1,33 +1,68 @@
-Userscript pour transformer la liste de releases sur un indexeur privé en une galerie d'affiches responsive, avec menu de configuration dynamique.
+# Mode Affiches Alternatif — UseNet Enhanced
 
-MàJ du 10.07.25 pour s'adapter au nouvel affichage du site.
+Userscript pour transformer la liste de releases sur un indexeur privé en **galerie d'affiches responsive**, avec overlay d’info avancé et configuration dynamique.
+
+**MàJ 11/07/2025 :** Compatible avec la dernière UI du site concerné. Encore un grand bravo & merci au développeur !
 
 ![Menu](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/1.png)
 
-📦 Installation
+---
 
-1. Installez Tampermonkey (ou équivalent : Violentmonkey, Greasemonkey)
-2. Créez un nouveau script et copiez-y l'intégralité du contenu de mode_affiches.js
-3. Sauvegardez et activez le script
+## 🚀 Fonctionnalités principales
 
-🚀 Fonctionnalités
+- **Affichage galerie** (grille responsive) pour les films et séries, sur la page d'accueil et les sections Films / Séries
+- **Overlay extra-large :** au clic sur une affiche, détail de toutes les releases du même titre (avec icônes d’action natives du site)
+- **Largeur d’affiche configurable** (slider : 200–360 px), lisible et adaptatif
+- **Menu de configuration dynamique** : sélectionnez les sections à transformer (Accueil, Films, Séries)
+- **Nettoyage/normalisation des titres** (optimisé Films & Séries)
+- **Bouton “Remonter en haut de page”** visible lors du scroll
+- **Options persistantes** (taille d’affiche & sections actives via LocalStorage)
 
- - Galerie d'affiches en place de la liste classique, y compris sur la page d'accueil
- - Responsive : le nombre de colonnes s'adapte à la largeur d'écran
- - Largeur d'affiche configurable (curseur de 80 à 300 px)
- - Pleine largeur : option pour forcer l’affichage sur toute la largeur (écrans ultra-larges)
- - Menu déroulant placé à droite du bouton "Voir les synopsis"
- - Filtre par section : activez/désactivez l’affichage des releases par catégorie (Films, Séries, Mangas, Musiques, XXX)
- - Nettoyage des titres pour Films & Séries ; titres bruts pour Mangas, Musiques & XXX
+---
 
-⚙️ Configuration
+## 📦 Installation
 
-Modifier le paramètres Match URL en haut du fichier avec l'URL du site : https://site.extension/*
+1. **Installez [Tampermonkey](https://www.tampermonkey.net/)** (ou équivalent : Violentmonkey, Greasemonkey)
+2. Créez un nouveau script et copiez-y le contenu de `mode_affiches.js`
+3. Sauvegardez, activez le script
+
+> **À adapter** :  
+> Modifiez le champ `@match` du script pour cibler votre propre indexeur (ex : `https://lesite.domaine/*`).
+
+---
+
+## 🖥️ Screenshots
 
 ![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/2.png)
-
 ![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/3.png)
-
 ![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/4.png)
-
 ![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/5.png)
+
+---
+
+## 🧩 Détails techniques
+
+- **Vanilla JS** (pas de dépendances externes)
+- Overlay uniquement au clic (ergonomie : pas d’effet “polluant” au survol)
+- Regroupement des releases par titre (film ou série) depuis la page chargée, donc pas d'appel superflue au site
+- Icônes natives pour chaque release (signalement, téléchargement, panier, etc.)
+
+---
+
+## ❓ FAQ
+
+- **Le script ne fonctionne pas ?**  
+  Vérifiez le champ `@match` tout en haut du script : il doit correspondre à votre site.
+- **Je veux plus d’options !**  
+  Forkez le script ou ouvrez un ticket pour proposer vos idées.
+- **Vous constatez un bug ?**  
+  Fournissez un extrait du HTML concerné pour correction rapide.
+
+---
+
+## 🤝 Crédits
+
+Développé par [Aerya](https://github.com/Aerya) — libre d’utilisation et de modification du moment que la source est citée.  
+Toute contribution est la bienvenue !
+
+---
