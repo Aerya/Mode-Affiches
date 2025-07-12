@@ -11,12 +11,36 @@ Userscript pour transformer la liste de releases sur un indexeur privé en **gal
 ## 🚀 Fonctionnalités principales
 
 - **Affichage galerie** (grille responsive) pour les films et séries, sur la page d'accueil et les sections Films / Séries
-- **Overlay extra-large :** au clic sur une affiche, détail de toutes les releases du même titre (avec icônes d’action natives du site)
+- **Regroupement de releases** pour les films et séries, sur la page chargée, toutes les releases d'un même contenu solt regroupées
+- **Overlay** : au clic sur une affiche, détail de toutes les releases du même titre (avec icônes d’action natives du site)
 - **Largeur d’affiche configurable** (slider : 200–360 px), lisible et adaptatif
 - **Menu de configuration dynamique** : sélectionnez les sections à transformer (Accueil, Films, Séries)
 - **Nettoyage/normalisation des titres** (optimisé Films & Séries)
 - **Bouton “Remonter en haut de page”** visible lors du scroll
 - **Options persistantes** (taille d’affiche & sections actives via LocalStorage)
+- **Mise à jour automatique** depuis GitHub à chaque utilisation du script dans le navigateur
+
+---
+
+## 🆕 Journal des mises à jour
+
+### 6.24 (12/07/2025)
+- Ajout d’une option pour la taille de police des noms de releases dans l’overlay (menu configuration)
+- Séparateur centré dans le header de l’overlay, correction « Voir toutes les releases pour le film / la série »
+- Correction : NFO toujours affiché devant l’overlay, ajustement dynamique de la hauteur de l’overlay
+- Mise à jour automatique depuis GitHub
+
+### 6.23 (11/07/2025)
+- Overlay extra-large (1150px), responsive à la largeur de vignette
+- Menu amélioré, bouton Remonter en haut de page
+- Affichage propre, bugfix police et espacements
+
+### 6.20 (10/07/2025)
+- Adaptation à la nouvelle structure du site
+- Responsive, pagination propre, intégration menu config
+- Groupement des releases par ID film/série, overlay dynamique par affiche
+- Option sections (Films, Séries, Accueil)
+- Slider taille d’affiche amélioré
 
 ---
 

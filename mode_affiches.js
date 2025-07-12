@@ -1,20 +1,18 @@
 // ==UserScript==
 // @name         UseNet Enhanced
-// @version      6.23.2
-// @date         11.07.25
-// @description  Userscript pour transformer la liste de releases sur un indexeur privé en **galerie d'affiches responsive**, avec overlay d’info avancé et configuration dynamique.
+// @version      6.24.4
+// @date         12.07.25
+// @description  Userscript pour transformer la liste de releases sur un indexeur privé en **galerie d'affiches responsive**
 // @author       Aerya | https://upandclear.org
 // @match        https://lesite.domaine/*
+// @updateURL    https://raw.githubusercontent.com/Aerya/Mode-Affiches/main/mode_affiches.js
+// @downloadURL  https://raw.githubusercontent.com/Aerya/Mode-Affiches/main/mode_affiches.js
 // @grant        none
 // ==/UserScript==
 
+
 (function () {
   'use strict';
-
-  function __AERYA__() {
-    return "Script original conçu pour Aerya";
-  }
-  window.__AERYA__ = __AERYA__;
 
   const CATEGORIES = [
     { key: 'HOME', label: 'Accueil' },
@@ -24,6 +22,7 @@
 
   const STORAGE_KEY = 'afficheModeSections';
   const STORAGE_MINWIDTH_KEY = 'afficheMinWidth';
+  const STORAGE_FONT_SIZE_KEY = 'afficheRlzFontSize';
 
   const getSection = () => {
     const url = new URL(window.location.href);
@@ -34,27 +33,17 @@
   };
 
   function getStoredConfig() {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    } catch (e) {
-      return [];
-    }
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch (e) { return []; }
   }
-  function saveConfig(arr) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-  }
-  function getMinWidth() {
-    return parseInt(localStorage.getItem(STORAGE_MINWIDTH_KEY) || '260');
-  }
-  function setMinWidth(val) {
-    localStorage.setItem(STORAGE_MINWIDTH_KEY, val);
-  }
+  function saveConfig(arr) { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+  function getMinWidth() { return parseInt(localStorage.getItem(STORAGE_MINWIDTH_KEY) || '260'); }
+  function setMinWidth(val) { localStorage.setItem(STORAGE_MINWIDTH_KEY, val); }
+  function getFontSize() { return parseInt(localStorage.getItem(STORAGE_FONT_SIZE_KEY) || '22'); }
+  function setFontSize(val) { localStorage.setItem(STORAGE_FONT_SIZE_KEY, val); }
 
   function extractDateAndSize(card) {
-    let date = '';
-    let size = '';
-    let badges = card.querySelectorAll('.badge');
-    badges.forEach(badge => {
+    let date = '', size = '';
+    card.querySelectorAll('.badge').forEach(badge => {
       const txt = badge.textContent.trim();
       if (!size && /([0-9]+(\.[0-9]+)?)( ?(GB|MB|G|M|Go|Mo))$/i.test(txt)) size = txt;
       if (!date && /\d{2}\/\d{2}\/\d{2}/.test(txt)) date = txt.match(/\d{2}\/\d{2}\/\d{2}/)?.[0] || '';
@@ -66,8 +55,8 @@
     const section = getSection();
     const config = getStoredConfig();
     const minwidth = getMinWidth();
+    const rlzFontSize = getFontSize();
     const show = config.includes(section);
-
     if (!CATEGORIES.some(c => c.key === section)) return;
     if (!show) return;
 
@@ -75,7 +64,7 @@
     const containers = document.querySelectorAll('.containert.article');
     if (!cards.length || !containers.length) return;
 
-    // Group by film/serie ID (movieid/tvid)
+    // Group releases pour film/série
     const grouped = new Map();
     cards.forEach(card => {
       const link = card.querySelector('a[href*="?d=fiche"]');
@@ -87,7 +76,7 @@
       grouped.get(idKey).push(card);
     });
 
-    // Création de la galerie
+    // Création galerie
     const gallery = document.createElement('div');
     gallery.className = 'd-flex flex-wrap';
     gallery.style.justifyContent = 'center';
@@ -110,12 +99,13 @@
       containerCard.style.position = 'relative';
       containerCard.style.display = 'block';
 
+      // Affiche = vignette
       const cloneImg = img.cloneNode(true);
       cloneImg.style.width = `${minwidth}px`;
       cloneImg.style.cursor = 'pointer';
       containerCard.appendChild(cloneImg);
 
-      // Overlay (masqué par défaut), largeur EXTRA-LARGE
+      // Overlay
       const tooltip = document.createElement('div');
       tooltip.className = 'affiche-tooltip';
       tooltip.style.position = 'absolute';
@@ -125,57 +115,89 @@
       tooltip.style.color = '#fff';
       tooltip.style.padding = '22px 36px 26px 36px';
       tooltip.style.borderRadius = '10px';
-      tooltip.style.fontSize = '23px';
+      tooltip.style.fontSize = rlzFontSize + 'px';
       tooltip.style.fontWeight = '400';
       tooltip.style.width = '1150px';
       tooltip.style.maxWidth = '99vw';
       tooltip.style.minHeight = `${minHeight}px`;
-      tooltip.style.zIndex = '10000';
+      tooltip.style.zIndex = '1010';
       tooltip.style.boxShadow = '0 0 14px 6px rgba(0,0,0,0.7)';
       tooltip.style.whiteSpace = 'normal';
       tooltip.style.display = 'none';
       tooltip.style.pointerEvents = 'auto';
 
-      let tooltipHTML = `
-        <div style="margin-bottom:16px;display:flex;align-items:center;gap:14px;">
-          <span style="font-size:26px;vertical-align:middle;">&#8595;</span>
-          <span style="font-size:22px;font-weight:700;color:#7be2d6;">Les dernières releases</span>
-          <span style="font-size:26px;vertical-align:middle;">&#8595;</span>
-          <span style="font-size:20px;font-weight:400;color:#aaa; margin-left:36px;">
-            | <a href="${card.querySelector('a[href*="?d=fiche"]')?.href || '#'}" style="color:#43a5be;text-decoration:none;font-weight:700;">Voir toutes les releases pour le ${getSection() === 'MOVIE' ? 'film' : 'série'}</a>
+      // Header overlay
+      let typeLabel = 'film', typeGender = 'le';
+      if (/tvid/i.test(groupKey)) { typeLabel = 'série'; typeGender = 'la'; }
+      tooltip.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:flex-start;margin-bottom:18px;width:100%;">
+          <span style="font-size:${rlzFontSize}px; font-weight:600; color:#45e3ee; margin-right:24px;display:flex;align-items:center;">
+            <span style="font-size:${rlzFontSize + 2}px;vertical-align:middle;">&#8595;</span>
+            Les dernières releases
+            <span style="font-size:${rlzFontSize + 2}px;vertical-align:middle;">&#8595;</span>
           </span>
+          <span style="flex:0 0 36px; margin:0 30px; display:flex;justify-content:center;align-items:center; color:#aaa;font-size:${rlzFontSize - 1}px;font-weight:400;">|</span>
+          <a href="${card.querySelector('a[href*="?d=fiche"]')?.href || '#'}"
+             style="color:#ffd04e; font-size:${rlzFontSize - 1}px; font-weight:600; text-decoration:none;">
+            Voir toutes les releases pour ${typeGender} ${typeLabel}
+          </a>
         </div>
       `;
+
+      // Overlay RLZs
+      let tooltipHTML = '';
       cardGroup.forEach((subcard, idx) => {
         const cardHeader = subcard.querySelector('.card-header');
         const cardBody = subcard.querySelector('.card-body');
         const title = cardHeader?.textContent.trim() || '';
-
         const { date, size } = extractDateAndSize(subcard);
 
+        // Icônes natives 
         let cardBodyHTML = cardBody ? cardBody.innerHTML : '';
+        let nfoHTML = '';
         if (cardBody && cardBodyHTML) {
           let tmp = document.createElement('div');
           tmp.innerHTML = cardBodyHTML;
           let spans = tmp.querySelectorAll('span.mx-1');
-          for (let i = 5; i < spans.length; i++) spans[i].remove();
-          cardBodyHTML = tmp.innerHTML;
+          // NFO
+          for (let i = 0; i < spans.length; i++) {
+            let a = spans[i].querySelector('a[data-target="#NFO"]');
+            if (a) {
+              // Ajoute un handler JS pour fermer overlay avant d’ouvrir NFO
+              a.addEventListener('click', function (e) {
+                e.stopPropagation();
+                document.querySelectorAll('.affiche-tooltip').forEach(div => div.style.display = 'none');
+              });
+              nfoHTML = spans[i].outerHTML;
+              spans[i].remove();
+              break;
+            }
+          }
+          // Garde max 4 premières icônes
+          for (let i = 4; i < spans.length; i++) spans[i].remove();
+          cardBodyHTML = Array.from(tmp.childNodes).map(x => x.outerHTML).join('');
         }
 
-        tooltipHTML += `<div style="margin-bottom:12px;display:flex;align-items:center;gap:10px;">`;
-
-        // Nom release
-        tooltipHTML += `<span style="flex:3 1 70%;font-size:22px;font-weight:400;color:#d0e5f9;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${title}">${title}</span>`;
-
-        // Date et taille
-        tooltipHTML += `<span style="margin-left:12px;font-size:20px;font-weight:400;color:#b5dbff;white-space:nowrap;">${size ? size : ''}${size && date ? ' • ' : ''}${date ? date : ''}</span>`;
-
-        // Icônes natives
-        tooltipHTML += `<div style="display:inline-flex;gap:8px;margin-left:16px;vertical-align:middle;align-items:center;">${cardBodyHTML}</div>`;
-
-        tooltipHTML += `</div>`;
+        tooltipHTML += `
+          <div style="margin-bottom:12px;display:flex;align-items:center;gap:10px;">
+            <span style="flex:3 1 70%;font-size:${rlzFontSize}px;font-weight:400;color:#cde5fc;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${title}">
+              ${title}
+            </span>
+            <span style="margin-left:12px;font-size:${rlzFontSize-2}px;font-weight:400;color:#b5dbff;white-space:nowrap;">
+              ${size ? size : ''}${size && date ? ' • ' : ''}${date ? date : ''}
+            </span>
+            <div style="display:inline-flex;gap:8px;margin-left:16px;vertical-align:middle;align-items:center;">
+              ${cardBodyHTML}
+              ${nfoHTML}
+            </div>
+          </div>
+        `;
       });
-      tooltip.innerHTML = tooltipHTML;
+
+      tooltip.innerHTML += tooltipHTML;
+
+      // Hauteur overlay dynamique
+      setTimeout(() => { tooltip.style.minHeight = ''; tooltip.style.height = ''; tooltip.style.maxHeight = 'none'; }, 10);
 
       // Toggle overlay au clic sur affiche
       let isOpen = false;
@@ -202,39 +224,7 @@
     });
   }
 
-  // Bouton remonter en haut
-  function createScrollTopButton() {
-    const btn = document.createElement('button');
-    btn.textContent = '↑ Haut de page';
-    btn.title = 'Remonter';
-    btn.style.position = 'fixed';
-    btn.style.right = '24px';
-    btn.style.bottom = '28px';
-    btn.style.zIndex = '99999';
-    btn.style.padding = '9px 18px';
-    btn.style.background = 'rgba(48,157,152,0.94)';
-    btn.style.color = '#fff';
-    btn.style.border = 'none';
-    btn.style.borderRadius = '8px';
-    btn.style.fontWeight = 'bold';
-    btn.style.fontSize = '18px';
-    btn.style.boxShadow = '0 2px 12px rgba(0,0,0,0.18)';
-    btn.style.cursor = 'pointer';
-    btn.style.opacity = '0.8';
-    btn.style.transition = 'opacity 0.2s';
-    btn.style.display = 'none';
-
-    btn.addEventListener('mouseenter', () => btn.style.opacity = '1');
-    btn.addEventListener('mouseleave', () => btn.style.opacity = '0.8');
-    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-    window.addEventListener('scroll', () => {
-      btn.style.display = (window.scrollY > 200) ? 'block' : 'none';
-    });
-
-    document.body.appendChild(btn);
-  }
-
+  // MENU CONFIGURATION + bouton remonter haut
   function createConfigDropdown() {
     const container = document.createElement('div');
     container.style.position = 'fixed';
@@ -318,24 +308,75 @@
       setMinWidth(sizeSlider.value);
       window.location.reload();
     });
-
     menu.appendChild(sizeSlider);
     menu.appendChild(sizeVal);
 
+    // Slider taille police overlay
+    const fontRow = document.createElement('div');
+    fontRow.style.marginTop = '16px';
+    fontRow.style.marginBottom = '2px';
+    fontRow.textContent = 'Taille du texte (overlay) :';
+    menu.appendChild(fontRow);
+
+    const fontSlider = document.createElement('input');
+    fontSlider.type = 'range';
+    fontSlider.min = '14';
+    fontSlider.max = '28';
+    fontSlider.step = '2';
+    fontSlider.value = getFontSize();
+    fontSlider.style.width = '140px';
+    fontSlider.style.verticalAlign = 'middle';
+
+    const fontVal = document.createElement('span');
+    fontVal.textContent = ` ${getFontSize()}px`;
+    fontVal.style.marginLeft = '8px';
+
+    fontSlider.addEventListener('input', () => {
+      fontVal.textContent = ` ${fontSlider.value}px`;
+      document.querySelectorAll('.affiche-tooltip').forEach(div => {
+        div.style.fontSize = fontSlider.value + 'px';
+      });
+    });
+    fontSlider.addEventListener('change', () => {
+      setFontSize(fontSlider.value);
+      window.location.reload();
+    });
+    menu.appendChild(fontSlider);
+    menu.appendChild(fontVal);
+
     container.appendChild(toggle);
     container.appendChild(menu);
-    document.body.appendChild(container);
+
+    // Remonter haut de page
+    if (!document.getElementById('remonter-haut-btn')) {
+      const upBtn = document.createElement('button');
+      upBtn.id = 'remonter-haut-btn';
+      upBtn.textContent = '↑ Haut de page';
+      upBtn.style.position = 'fixed';
+      upBtn.style.bottom = '22px';
+      upBtn.style.right = '26px';
+      upBtn.style.background = '#309d98';
+      upBtn.style.color = '#fff';
+      upBtn.style.border = 'none';
+      upBtn.style.borderRadius = '6px';
+      upBtn.style.padding = '8px 20px';
+      upBtn.style.fontWeight = 'bold';
+      upBtn.style.fontSize = '16px';
+      upBtn.style.cursor = 'pointer';
+      upBtn.style.boxShadow = '0 3px 12px rgba(0,0,0,0.14)';
+      upBtn.style.zIndex = '99999';
+      upBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      document.body.appendChild(upBtn);
+    }
   }
 
   function start() {
     createConfigDropdown();
     transformAffiches();
-    createScrollTopButton();
   }
-
-  if (document.readyState !== 'loading') {
-    start();
-  } else {
-    document.addEventListener('DOMContentLoaded', start);
-  }
+  if (document.readyState !== 'loading') start();
+  else document.addEventListener('DOMContentLoaded', start);
 })();
+// Aerya
