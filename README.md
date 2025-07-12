@@ -2,7 +2,7 @@
 
 Userscript pour transformer la liste de releases sur un indexeur privé en **galerie d'affiches responsive**, avec overlay d’info avancé et configuration dynamique.
 
-**MàJ 11/07/2025 :** Compatible avec la dernière UI du site concerné. Encore un grand bravo & merci au développeur !
+Encore un grand bravo & merci au développeur du site !
 
 ![Menu](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/1.png)
 
