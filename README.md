@@ -19,6 +19,7 @@ Encore un grand bravo & merci au développeur du site !
 - **Overlay** : au clic sur une affiche, détail de toutes les releases du même titre (avec icônes d’action natives du site)
 - **Largeur d’affiche configurable** (slider : 200–360 px), lisible et adaptatif
 - **Menu de configuration dynamique** : sélectionnez les sections à transformer (Accueil, Films, Séries)
+- **Affichage de la note TMDB avec lien vers la fiche** optionnel, avec clé API personnelle à configurer
 - **Nettoyage/normalisation des titres** (optimisé Films & Séries)
 - **Bouton “Remonter en haut de page”** visible lors du scroll
 - **Options persistantes** (taille d’affiche & sections actives via LocalStorage)
