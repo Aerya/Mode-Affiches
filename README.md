@@ -4,7 +4,11 @@ Userscript pour transformer la liste de releases sur un indexeur privé en **gal
 
 Encore un grand bravo & merci au développeur du site !
 
-![Menu](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/1.png)
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/1.1.png" alt="Menu" />
+
+</div>
 
 ---
 
