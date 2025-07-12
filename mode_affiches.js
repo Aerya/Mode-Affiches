@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         UseNet Enhanced
-// @version      6.26
+// @version      6.27
 // @date         12.07.25
 // @description  Userscript pour transformer la liste de releases sur un indexeur privé en galerie d'affiches responsive
 // @author       Aerya | https://upandclear.org
@@ -9,9 +9,6 @@
 // @downloadURL  https://raw.githubusercontent.com/Aerya/Mode-Affiches/main/mode_affiches.js
 // @grant        none
 // ==/UserScript==
-
-
-
 
 
 (function () {
@@ -40,7 +37,7 @@
   function setMinWidth(val) { localStorage.setItem(STORAGE_MINWIDTH_KEY, val); }
   function getFontSize() { return parseInt(localStorage.getItem(STORAGE_FONT_SIZE_KEY) || '22'); }
   function setFontSize(val) { localStorage.setItem(STORAGE_FONT_SIZE_KEY, val); }
-  function getShowTmdb() { return localStorage.getItem(STORAGE_SHOW_TMDB_KEY) === '1'; }
+  function getShowTmdb() { return localStorage.getItem(STORAGE_SHOW_TMDB_KEY) !== '0'; }
   function setShowTmdb(val) { localStorage.setItem(STORAGE_SHOW_TMDB_KEY, val ? '1' : '0'); }
   function getTmdbCache() {
     try { return JSON.parse(localStorage.getItem(TMDB_CACHE_KEY)) || {}; } catch (e) { return {}; }
@@ -99,7 +96,7 @@
     const containers = document.querySelectorAll('.containert.article');
     if (!cards.length || !containers.length) return;
 
-    // Group releases pour film/série
+    // Group releases par film/série via TMDB ID
     const grouped = new Map();
     cards.forEach(card => {
       const link = card.querySelector('a[href*="?d=fiche"]');
@@ -156,25 +153,25 @@
         fetchTmdb(group.movieType, group.tmdbId).then(data => {
           if (!data) return;
           const vote = data.vote_average ? Number(data.vote_average).toFixed(1) : '?';
-          const votes = data.vote_count ? ` (${data.vote_count})` : '';
+          const votes = data.vote_count ? `  (${data.vote_count})` : '';
           // Mini-icône SVG TMDB
-          const tmdbSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="18" height="18" style="vertical-align:middle;margin-right:4px;"><rect width="32" height="32" rx="6" fill="#01d277"/><text x="16" y="21" text-anchor="middle" font-size="13" font-family="Arial" fill="#fff" font-weight="bold">T</text></svg>`;
+          const tmdbSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 32" width="70" height="42" style="vertical-align:middle; margin-right:3px;"><rect width="110" height="32" rx="8" fill="#01d277"/><text x="55" y="22" text-anchor="middle" font-size="19" font-family="Arial" fill="#fff" font-weight="bold">TMDB</text></svg>`;
           const badge = document.createElement('span');
-          badge.innerHTML = `${tmdbSvg} <span style="font-size:17px;font-weight:600;">${vote}</span><span style="font-size:12px;color:#ffd04e;">${votes}</span>`;
+          badge.innerHTML = `${tmdbSvg} <span style="font-size:19px;font-weight:bold;">${vote}</span>&nbsp;&nbsp;<span style="font-size:13px;color:#ffd04e;">${votes}</span>`;
           badge.title = "Note TMDB";
           badge.style.position = 'absolute';
-          badge.style.top = '8px';
-          badge.style.left = '10px';
+          badge.style.top = '7px';
+          badge.style.left = '8px';
           badge.style.background = '#032541de';
           badge.style.color = '#ffd04e';
+          badge.style.fontWeight = 'bold';
           badge.style.borderRadius = '8px';
-          badge.style.padding = '2px 7px 2px 3px';
-          badge.style.fontSize = '15px';
+          badge.style.padding = '2px 8px 2px 3px';
+          badge.style.fontSize = '18px';
           badge.style.boxShadow = '0 2px 8px #222c';
           badge.style.zIndex = 15;
           badge.style.display = 'flex';
           badge.style.alignItems = 'center';
-          badge.style.userSelect = 'none';
           containerCard.appendChild(badge);
         });
       }
@@ -197,7 +194,7 @@
       tooltip.style.borderRadius = '10px';
       tooltip.style.fontSize = rlzFontSize + 'px';
       tooltip.style.fontWeight = '400';
-      tooltip.style.width = '1150px';
+      tooltip.style.width = Math.min(window.innerWidth - 40, 1150) + 'px';
       tooltip.style.maxWidth = '99vw';
       tooltip.style.minHeight = `${minHeight}px`;
       tooltip.style.zIndex = '1010';
@@ -205,6 +202,12 @@
       tooltip.style.whiteSpace = 'normal';
       tooltip.style.display = 'none';
       tooltip.style.pointerEvents = 'auto';
+
+      // Responsive : recalcule la largeur à l’ouverture si resize
+      function adjustOverlayWidth() {
+        tooltip.style.width = Math.min(window.innerWidth - 40, 1150) + 'px';
+      }
+      window.addEventListener('resize', adjustOverlayWidth);
 
       // Header overlay
       let typeLabel = 'film', typeGender = 'le';
@@ -216,8 +219,8 @@
             Les dernières releases
             <span style="font-size:${rlzFontSize + 2}px;vertical-align:middle;">&#8595;</span>
           </span>
-          <span style="flex:0 0 36px; margin:0 20px; display:flex;justify-content:center;align-items:center; color:#aaa;font-size:${rlzFontSize - 1}px;font-weight:400;"> </span>
-          <a href="${card.querySelector('a[href*=\"?d=fiche\"]')?.href || '#'}"
+          <span style="flex:0 0 36px; margin:0 22px; display:flex;justify-content:center;align-items:center; color:#aaa;font-size:${rlzFontSize - 1}px;font-weight:400;">|</span>
+          <a href="${card.querySelector('a[href*="?d=fiche"]')?.href || '#'}"
              style="color:#ffd04e; font-size:${rlzFontSize - 1}px; font-weight:600; text-decoration:none;">
             Voir toutes les releases pour ${typeGender} ${typeLabel}
           </a>
@@ -238,7 +241,7 @@
           tmp.innerHTML = cardBodyHTML;
           let spans = tmp.querySelectorAll('span.mx-1');
           for (let i = 0; i < spans.length; i++) {
-            let a = spans[i].querySelector('a[data-target=\"#NFO\"]');
+            let a = spans[i].querySelector('a[data-target="#NFO"]');
             if (a) {
               a.addEventListener('click', function (e) {
                 e.stopPropagation();
@@ -249,21 +252,19 @@
               break;
             }
           }
-          // Pour que tous les écarts soient identiques entre icônes
           for (let i = 4; i < spans.length; i++) spans[i].remove();
-          spans.forEach((s, idx) => { if (idx === 0) s.style.marginRight = '6px'; else s.style.marginRight = '8px'; });
           cardBodyHTML = Array.from(tmp.childNodes).map(x => x.outerHTML).join('');
         }
 
         tooltipHTML += `
-          <div style="margin-bottom:12px;display:flex;align-items:center;gap:10px;">
+          <div style="margin-bottom:12px;display:flex;align-items:center;gap:12px;">
             <span style="flex:3 1 70%;font-size:${rlzFontSize}px;font-weight:400;color:#cde5fc;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${title}">
               ${title}
             </span>
             <span style="margin-left:12px;font-size:${rlzFontSize-2}px;font-weight:400;color:#b5dbff;white-space:nowrap;">
               ${size ? size : ''}${size && date ? ' • ' : ''}${date ? date : ''}
             </span>
-            <div style="display:inline-flex;gap:8px;margin-left:16px;vertical-align:middle;align-items:center;">
+            <div style="display:inline-flex;gap:10px;margin-left:12px;vertical-align:middle;align-items:center;">
               ${cardBodyHTML}
               ${nfoHTML}
             </div>
@@ -275,24 +276,14 @@
 
       setTimeout(() => { tooltip.style.minHeight = ''; tooltip.style.height = ''; tooltip.style.maxHeight = 'none'; }, 10);
 
-      // Overlay "always fits on screen"
+      // Toggle overlay au clic sur affiche
       let isOpen = false;
       cloneImg.addEventListener('click', (e) => {
         e.stopPropagation();
+        adjustOverlayWidth();
         document.querySelectorAll('.affiche-tooltip').forEach(div => div.style.display = 'none');
-        tooltip.style.display = 'block';
-        // Position
-        const rect = containerCard.getBoundingClientRect();
-        const oRect = tooltip.getBoundingClientRect();
-        let left = 0;
-        if (rect.left + oRect.width > window.innerWidth) {
-          left = window.innerWidth - oRect.width - 8; // 8px margin
-          if (left < 0) left = 0;
-        } else {
-          left = rect.left;
-        }
-        tooltip.style.left = (left - rect.left) + 'px';
-        isOpen = true;
+        tooltip.style.display = isOpen ? 'none' : 'block';
+        isOpen = !isOpen;
       });
       document.addEventListener('click', (e) => {
         if (!containerCard.contains(e.target)) {
@@ -370,6 +361,25 @@
       menu.appendChild(wrapper);
     });
 
+    // Option badge TMDB
+    const tmdbRow = document.createElement('div');
+    tmdbRow.style.marginTop = '14px';
+    const tmdbCheckbox = document.createElement('input');
+    tmdbCheckbox.type = 'checkbox';
+    tmdbCheckbox.id = 'chk_tmdb';
+    tmdbCheckbox.checked = getShowTmdb();
+    tmdbCheckbox.addEventListener('change', () => {
+      setShowTmdb(tmdbCheckbox.checked);
+      window.location.reload();
+    });
+    const tmdbLabel = document.createElement('label');
+    tmdbLabel.textContent = "Afficher la note TMDB sur l'affiche";
+    tmdbLabel.setAttribute('for', tmdbCheckbox.id);
+    tmdbLabel.style.marginLeft = '4px';
+    tmdbRow.appendChild(tmdbCheckbox);
+    tmdbRow.appendChild(tmdbLabel);
+    menu.appendChild(tmdbRow);
+
     // Slider taille vignettes
     const sizeRow = document.createElement('div');
     sizeRow.style.marginTop = '14px';
@@ -432,25 +442,6 @@
     });
     menu.appendChild(fontSlider);
     menu.appendChild(fontVal);
-
-    // Option badge TMDB
-    const tmdbOptRow = document.createElement('div');
-    tmdbOptRow.style.marginTop = '16px';
-    const tmdbCheckbox = document.createElement('input');
-    tmdbCheckbox.type = 'checkbox';
-    tmdbCheckbox.id = 'affiche-tmdb-opt';
-    tmdbCheckbox.checked = getShowTmdb();
-    tmdbCheckbox.addEventListener('change', () => {
-      setShowTmdb(tmdbCheckbox.checked);
-      window.location.reload();
-    });
-    const tmdbLabel = document.createElement('label');
-    tmdbLabel.textContent = " Afficher la note TMDB sur l'affiche";
-    tmdbLabel.setAttribute('for', 'affiche-tmdb-opt');
-    tmdbLabel.style.marginLeft = '5px';
-    tmdbOptRow.appendChild(tmdbCheckbox);
-    tmdbOptRow.appendChild(tmdbLabel);
-    menu.appendChild(tmdbOptRow);
 
     container.appendChild(toggle);
     container.appendChild(menu);

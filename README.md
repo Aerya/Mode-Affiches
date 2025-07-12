@@ -6,7 +6,7 @@ Encore un grand bravo & merci au développeur du site !
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/1.1.png" alt="Menu" />
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/1.2.png" alt="Menu" />
 
 </div>
 
@@ -27,6 +27,10 @@ Encore un grand bravo & merci au développeur du site !
 ---
 
 ## 🆕 Journal des mises à jour
+
+### 6.27 (12/07/2025)
+- Corrections affichage note TMDB. Au besoin, la taille de l'icône se modifie ligne 158 `width="70" height="42"`
+- Ajout de notes TMDB sur les affiches, en option
 
 ### 6.26 (12/07/2025)
 - Correction overlay qui pouvait dépasser les dimensions du navigateur
@@ -67,10 +71,10 @@ Encore un grand bravo & merci au développeur du site !
 
 ## 🖥️ Screenshots
 
-![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/2.png)
-![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/3.png)
-![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/4.png)
-![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/5.png)
+![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/2.1.png)
+![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/3.1.png)
+![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/4.1.png)
+![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/5.1.png)
 
 ---
 
