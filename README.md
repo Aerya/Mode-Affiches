@@ -28,6 +28,9 @@ Encore un grand bravo & merci au développeur du site !
 
 ## 🆕 Journal des mises à jour
 
+### 6.28 (12/07/2025)
+- Ajout lien vers fiche TMDB dans icône + note (votes)
+
 ### 6.27 (12/07/2025)
 - Corrections affichage note TMDB. Au besoin, la taille de l'icône se modifie ligne 158 `width="70" height="42"`
 

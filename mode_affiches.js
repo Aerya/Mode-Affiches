@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         UseNet Enhanced
-// @version      6.27
+// @version      6.28
 // @date         12.07.25
 // @description  Userscript pour transformer la liste de releases sur un indexeur privé en galerie d'affiches responsive
 // @author       Aerya | https://upandclear.org
@@ -150,30 +150,42 @@
 
       // Badge note TMDB (optionnel)
       if (showTmdb) {
-        fetchTmdb(group.movieType, group.tmdbId).then(data => {
-          if (!data) return;
-          const vote = data.vote_average ? Number(data.vote_average).toFixed(1) : '?';
-          const votes = data.vote_count ? `  (${data.vote_count})` : '';
-          // Mini-icône SVG TMDB
-          const tmdbSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 32" width="70" height="42" style="vertical-align:middle; margin-right:3px;"><rect width="110" height="32" rx="8" fill="#01d277"/><text x="55" y="22" text-anchor="middle" font-size="19" font-family="Arial" fill="#fff" font-weight="bold">TMDB</text></svg>`;
-          const badge = document.createElement('span');
-          badge.innerHTML = `${tmdbSvg} <span style="font-size:19px;font-weight:bold;">${vote}</span>&nbsp;&nbsp;<span style="font-size:13px;color:#ffd04e;">${votes}</span>`;
-          badge.title = "Note TMDB";
-          badge.style.position = 'absolute';
-          badge.style.top = '7px';
-          badge.style.left = '8px';
-          badge.style.background = '#032541de';
-          badge.style.color = '#ffd04e';
-          badge.style.fontWeight = 'bold';
-          badge.style.borderRadius = '8px';
-          badge.style.padding = '2px 8px 2px 3px';
-          badge.style.fontSize = '18px';
-          badge.style.boxShadow = '0 2px 8px #222c';
-          badge.style.zIndex = 15;
-          badge.style.display = 'flex';
-          badge.style.alignItems = 'center';
-          containerCard.appendChild(badge);
-        });
+    fetchTmdb(group.movieType, group.tmdbId).then(data => {
+      if (!data) return;
+      const vote = data.vote_average ? Number(data.vote_average).toFixed(1) : '?';
+      const votes = data.vote_count ? `  (${data.vote_count})` : '';
+      const tmdbSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 32" width="70" height="42" style="vertical-align:middle; margin-right:4px;"><rect width="110" height="32" rx="8" fill="#01d277"/><text x="55" y="22" text-anchor="middle" font-size="19" font-family="Arial" fill="#fff" font-weight="bold">TMDB</text></svg>`;
+
+      // Détermine le lien TMDB (film ou série)
+      let tmdbUrl = '';
+      if (group.movieType === 'movie') tmdbUrl = `https://www.themoviedb.org/movie/${group.tmdbId}`;
+      else if (group.movieType === 'tv') tmdbUrl = `https://www.themoviedb.org/tv/${group.tmdbId}`;
+
+      const badge = document.createElement('a');
+      badge.href = tmdbUrl;
+      badge.target = '_blank';
+      badge.rel = 'noopener noreferrer';
+      badge.title = "Voir sur TMDB";
+      badge.style.position = 'absolute';
+      badge.style.top = '7px';
+      badge.style.left = '8px';
+      badge.style.background = '#032541de';
+      badge.style.color = '#ffd04e';
+      badge.style.fontWeight = 'bold';
+      badge.style.borderRadius = '8px';
+      badge.style.padding = '2px 11px 2px 3px';
+      badge.style.fontSize = '18px';
+      badge.style.boxShadow = '0 2px 8px #222c';
+      badge.style.zIndex = 15;
+      badge.style.display = 'flex';
+      badge.style.alignItems = 'center';
+      badge.style.textDecoration = 'none';
+
+      badge.innerHTML = `${tmdbSvg}<span style="font-size:19px;font-weight:bold;">${vote}</span><span style="font-size:13px;color:#ffd04e;">${votes}</span>`;
+
+      containerCard.appendChild(badge);
+    });
+
       }
 
       // Clone affiche
