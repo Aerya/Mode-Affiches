@@ -1,5 +1,12 @@
 # Mode Affiches Alternatif — UseNet Enhanced
 
+> 🚨 **Problème connu**  
+> L'option **Jellyseerr** est *temporairement hors service*.  
+> Je m'en occupe au plus vite pour un retour à la normale.  
+> Merci pour votre patience et votre soutien ! 🙏
+
+
+
 Userscript avancé pour transformer la liste de releases sur un indexeur privé en **galerie d’affiches responsive**, overlay d’info détaillé, et actions directes Radarr/Sonarr.
 
 > **Merci au développeur du site pour le partenariat technique !** Qui a en plus ajouté le mode écran large :)
