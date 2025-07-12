@@ -25,6 +25,9 @@ Userscript pour transformer la liste de releases sur un indexeur privé en **gal
 ## 🆕 Journal des mises à jour
 
 ### 6.24 (12/07/2025)
+- Correction bogue Bouton de menu
+
+### 6.24 (12/07/2025)
 - Ajout d’une option pour la taille de police des noms de releases dans l’overlay (menu configuration)
 - Séparateur centré dans le header de l’overlay, correction « Voir toutes les releases pour le film / la série »
 - Correction : NFO toujours affiché devant l’overlay, ajustement dynamique de la hauteur de l’overlay

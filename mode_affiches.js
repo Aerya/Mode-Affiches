@@ -1,15 +1,14 @@
 // ==UserScript==
 // @name         UseNet Enhanced
-// @version      6.24.4
+// @version      6.25
 // @date         12.07.25
-// @description  Userscript pour transformer la liste de releases sur un indexeur privé en **galerie d'affiches responsive**
+// @description  Userscript pour transformer la liste de releases sur un indexeur privé en galerie d'affiches responsive
 // @author       Aerya | https://upandclear.org
-// @match        https://lesite.domaine/*
+// @match        https://unfr.pw/*
 // @updateURL    https://raw.githubusercontent.com/Aerya/Mode-Affiches/main/mode_affiches.js
 // @downloadURL  https://raw.githubusercontent.com/Aerya/Mode-Affiches/main/mode_affiches.js
 // @grant        none
 // ==/UserScript==
-
 
 (function () {
   'use strict';
@@ -64,7 +63,7 @@
     const containers = document.querySelectorAll('.containert.article');
     if (!cards.length || !containers.length) return;
 
-    // Group releases pour film/série
+    // Group releases par film/série
     const grouped = new Map();
     cards.forEach(card => {
       const link = card.querySelector('a[href*="?d=fiche"]');
@@ -136,7 +135,8 @@
             Les dernières releases
             <span style="font-size:${rlzFontSize + 2}px;vertical-align:middle;">&#8595;</span>
           </span>
-          <span style="flex:0 0 36px; margin:0 30px; display:flex;justify-content:center;align-items:center; color:#aaa;font-size:${rlzFontSize - 1}px;font-weight:400;">|</span>
+          <span style="flex:0 0 36px; margin:0 34px; display:flex;justify-content:center;align-items:center; color:#aaa;font-size:${rlzFontSize - 1}px;font-weight:400;">
+          </span>
           <a href="${card.querySelector('a[href*="?d=fiche"]')?.href || '#'}"
              style="color:#ffd04e; font-size:${rlzFontSize - 1}px; font-weight:600; text-decoration:none;">
             Voir toutes les releases pour ${typeGender} ${typeLabel}
@@ -152,18 +152,17 @@
         const title = cardHeader?.textContent.trim() || '';
         const { date, size } = extractDateAndSize(subcard);
 
-        // Icônes natives 
+        // Icônes natives
         let cardBodyHTML = cardBody ? cardBody.innerHTML : '';
         let nfoHTML = '';
         if (cardBody && cardBodyHTML) {
           let tmp = document.createElement('div');
           tmp.innerHTML = cardBodyHTML;
           let spans = tmp.querySelectorAll('span.mx-1');
-          // NFO
+          // NFO = dernière icône
           for (let i = 0; i < spans.length; i++) {
             let a = spans[i].querySelector('a[data-target="#NFO"]');
             if (a) {
-              // Ajoute un handler JS pour fermer overlay avant d’ouvrir NFO
               a.addEventListener('click', function (e) {
                 e.stopPropagation();
                 document.querySelectorAll('.affiche-tooltip').forEach(div => div.style.display = 'none');
@@ -173,7 +172,6 @@
               break;
             }
           }
-          // Garde max 4 premières icônes
           for (let i = 4; i < spans.length; i++) spans[i].remove();
           cardBodyHTML = Array.from(tmp.childNodes).map(x => x.outerHTML).join('');
         }
@@ -226,6 +224,9 @@
 
   // MENU CONFIGURATION + bouton remonter haut
   function createConfigDropdown() {
+    if (!document.body) { setTimeout(createConfigDropdown, 100); return; }
+    if (document.getElementById('remonter-haut-btn')) return;
+
     const container = document.createElement('div');
     container.style.position = 'fixed';
     container.style.top = '12px';
@@ -241,6 +242,7 @@
 
     const toggle = document.createElement('button');
     toggle.textContent = '🎬 Mode Affiches Alternatif';
+    toggle.setAttribute('aria-label', 'Mode Affiches Alternatif');
     toggle.style.cursor = 'pointer';
     toggle.style.fontWeight = 'bold';
     toggle.style.background = '#309d98';
@@ -346,6 +348,7 @@
 
     container.appendChild(toggle);
     container.appendChild(menu);
+    document.body.appendChild(container);
 
     // Remonter haut de page
     if (!document.getElementById('remonter-haut-btn')) {
@@ -376,7 +379,16 @@
     createConfigDropdown();
     transformAffiches();
   }
+
   if (document.readyState !== 'loading') start();
-  else document.addEventListener('DOMContentLoaded', start);
+  else window.addEventListener('DOMContentLoaded', start);
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      if (!document.querySelector('button[aria-label="Mode Affiches Alternatif"]')) {
+        start();
+      }
+    }, 500);
+  });
+
 })();
-// Aerya
