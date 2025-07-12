@@ -67,33 +67,33 @@ Userscript avancé pour transformer la liste de releases sur un indexeur privé 
 <div align="center">
 
 ### Menu  
-<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/menu.1.0.png" alt="Démo Menu" width="600"/>
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/menu.1.0.png" />
 
 </div>
 
 <div align="center">
 
 ### Overlay  
-<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/overlay.1.0.png" alt="Démo Overlay 1" width="400"/>
-<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/overlay.1.1.png" alt="Démo Overlay 2" width="400"/>
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/overlay.1.0.png" />
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/overlay.1.1.png" />
 
 </div>
 
 <div align="center">
 
 ### Affiches  
-<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/affiches.1.0.png" alt="Démo Affiches 1" width="400"/>
-<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/affiches.1.1.png" alt="Démo Affiches 2" width="400"/>
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/affiches.1.0.png" />
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/affiches.1.1.png" />
 
 </div>
 
 <div align="center">
 
 ### Radarr  
-<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/radarr.1.0.png" alt="Démo Radarr 1" width="350"/>
-<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/radarr.1.1.png" alt="Démo Radarr 2" width="350"/>
-<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/radarr.1.2.png" alt="Démo Radarr 3" width="350"/>
-<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/radarr.1.3.png" alt="Démo Radarr 4" width="350"/>
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/radarr.1.0.png" />
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/radarr.1.1.png" />
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/radarr.1.2.png" />
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/radarr.1.3.png" />
 
 </div>
 
