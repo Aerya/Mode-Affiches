@@ -30,7 +30,6 @@ Encore un grand bravo & merci au développeur du site !
 
 ### 6.27 (12/07/2025)
 - Corrections affichage note TMDB. Au besoin, la taille de l'icône se modifie ligne 158 `width="70" height="42"`
-- Ajout de notes TMDB sur les affiches, en option
 
 ### 6.26 (12/07/2025)
 - Correction overlay qui pouvait dépasser les dimensions du navigateur
