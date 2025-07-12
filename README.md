@@ -5,7 +5,6 @@ Userscript avancé pour transformer la liste de releases sur un indexeur privé 
 > **Merci au développeur du site pour le partenariat technique !** Qui a en plus ajouté le mode écran large :)
 > **Merci à chatGPT pour les corrections (1 erreur de corrigée, 2 de créées lol), le décalage de l'overlay, l'intégration de Radarr en exemple et le ReadMe !**
 
-
 ---
 
 ## 🚀 Fonctionnalités principales
