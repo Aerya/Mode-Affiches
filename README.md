@@ -4,6 +4,11 @@ Userscript pour transformer la liste de releases sur un indexeur privé en **gal
 
 Encore un grand bravo & merci au développeur du site !
 
+
+### A l'avenir, les mises à jour ne seront publiées que sur le Git fu site concerné afin de pouvoir mettre les URLs en clair ###
+
+
+
 <div align="center">
 
 <img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/1.2.png" alt="Menu" />
