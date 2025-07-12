@@ -1,109 +1,212 @@
 # Mode Affiches Alternatif — UseNet Enhanced
 
-Userscript pour transformer la liste de releases sur un indexeur privé en **galerie d'affiches responsive**, avec overlay d’info avancé et configuration dynamique.
+Userscript avancé pour transformer la liste de releases sur un indexeur privé en **galerie d’affiches responsive**, overlay d’info détaillé, et actions directes Radarr/Sonarr.
 
-Encore un grand bravo & merci au développeur du site !
+> **Merci au développeur du site pour le partenariat technique !** Qui a en plus ajouté le mode écran large :)
+> **Merci à chatGPT pour les corrections (1 erreur de corrigée, 2 de créées lol), le décalage de l'overlay, l'intégration de Radarr en exemple et le ReadMe !**
 
-<div align="center">
-
-<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/1.2.png" alt="Menu" />
-
-</div>
 
 ---
 
 ## 🚀 Fonctionnalités principales
 
-- **Affichage galerie** (grille responsive) pour les films et séries, sur la page d'accueil et les sections Films / Séries
-- **Regroupement de releases** pour les films et séries, sur la page chargée, toutes les releases d'un même contenu solt regroupées
-- **Overlay** : au clic sur une affiche, détail de toutes les releases du même titre (avec icônes d’action natives du site)
-- **Largeur d’affiche configurable** (slider : 200–360 px), lisible et adaptatif
-- **Menu de configuration dynamique** : sélectionnez les sections à transformer (Accueil, Films, Séries)
-- **Affichage de la note TMDB avec lien vers la fiche** optionnel, avec clé API personnelle à configurer
-- **Nettoyage/normalisation des titres** (optimisé Films & Séries)
-- **Bouton “Remonter en haut de page”** visible lors du scroll
-- **Options persistantes** (taille d’affiche & sections actives via LocalStorage)
-- **Mise à jour automatique** depuis GitHub à chaque utilisation du script dans le navigateur
+- **Affichage galerie** : Grille responsive pour films & séries (Accueil, Films, Séries)
+- **Regroupement intelligent** : Toutes les releases d’un même film/série sont rassemblées sous une seule affiche
+- **Overlay dynamique & configurable** :  
+  - Clic sur une affiche = détails de toutes les releases du titre (scroll auto si +10 releases)
+  - Sur option, ouverture dans un nouvel onglet de la fiche du média/Voir toutes les releases
+  - **Taille de police de l’overlay réglable**
+- **Actions Radarr/Sonarr/4K/Overserr/Jellyseerr** :  (NB : j'ai pas pris le temps de tester Jellyseerr, je me suis basé sur Overseerr)
+  - Boutons d’ajout direct (Radarr, Radarr 4K, Sonarr, Sonarr 4K) affichés **uniquement si des instances sont configurées** (via le menu)
+  - Configuration facile des instances, sans exposer d’URL du site ou de clés en dur
+  - Fonctionne avec URL ou http://ip:port **sans blackslash à la fin**
+  - Pour Overseerr/Jellyseerr, voir plus loin dans le ReadMe (Détails Techniques) car il faut modifier le reverse-proxy si vous en utilisez un
+  - Qualité et dossier cible auto, choix du profil dynamique
+- **Badges notes TMDB/IMDB** :  
+  - Notes avec icônes, fond blanc translucide, texte noir gras  
+  - **Lien direct vers la fiche TMDB**
+- **Largeur d’affiche configurable** : Slider 200–360 px
+- **Menu de configuration dynamique** : Sélection des sections à transformer (Accueil, Films, Séries), instances Radarr/Sonarr, options d’UI
+- **Persistant** : Toutes les préférences (sections actives, tailles, instances…) sont sauvegardées en LocalStorage
+- **Bouton “Remonter en haut de page”** : Apparition automatique au scroll
+- **Sécurité et vie privée** :  
+  - **Le script ne contient aucune URL d’indexeur**  
+  - Grâce à une détection côté navigateur, il s’active uniquement sur le bon site, sans config manuelle  
+  - **Mises à jour automatiques** : Le script vérifie et propose les updates GitHub/Gitea de lui-même (il check les dépôts toutes les 12h)
 
 ---
 
 ## 🆕 Journal des mises à jour
 
-### 6.28 (12/07/2025)
-- Ajout lien vers fiche TMDB dans icône + note (votes)
+**8.4.3 (12/07/2025)**
 
-### 6.27 (12/07/2025)
-- Corrections affichage note TMDB. Au besoin, la taille de l'icône se modifie ligne 158 `width="70" height="42"`
+- Ajout de la fonction d’auto-update discrète depuis tig. et GitHub
+- Support amélioré pour charger la mise à jour depuis les deux sources simultanément
+- Correction mineure dans le processus d’ouverture de l’onglet de mise à jour
+- Stabilisation générale du script, sans suppression de fonctionnalités
 
-### 6.26 (12/07/2025)
-- Correction overlay qui pouvait dépasser les dimensions du navigateur
-- Ajout de notes TMDB sur les affiches, en option
+**8.4.2 (12/07/2025)**
 
-### 6.25 (12/07/2025)
-- Correction bogue Bouton de menu
-
-### 6.24 (12/07/2025)
-- Ajout d’une option pour la taille de police des noms de releases dans l’overlay (menu configuration)
-- Séparateur centré dans le header de l’overlay, correction « Voir toutes les releases pour le film / la série »
-- Correction : NFO toujours affiché devant l’overlay, ajustement dynamique de la hauteur de l’overlay
-- Mise à jour automatique depuis GitHub
-
-### 6.23 (11/07/2025)
-- Overlay extra-large (1150px), responsive à la largeur de vignette
-- Menu amélioré, bouton Remonter en haut de page
-- Affichage propre, bugfix police et espacements
-
-### 6.20 (10/07/2025)
-- Adaptation à la nouvelle structure du site
-- Responsive, pagination propre, intégration menu config
-- Groupement des releases par ID film/série, overlay dynamique par affiche
-- Option sections (Films, Séries, Accueil)
-- Slider taille d’affiche amélioré
+- Badges TMDB/IMDB : fond blanc opaque, texte noir gras, lien direct vers la fiche TMDB
+- Icônes Radarr/Sonarr/4K visibles uniquement si instances configurées
+- Config multi-instance Radarr/Sonarr, Overseerr, Jellyseerr, overlay moderne, taille de police ajustable
+- Nombreuses optimisations UX
 
 ---
 
 ## 📦 Installation
 
-1. **Installez [Tampermonkey](https://www.tampermonkey.net/)** (ou équivalent : Violentmonkey, Greasemonkey)
-2. Créez un nouveau script et copiez-y le contenu de `mode_affiches.js`
-3. Modifiez le champ `@match` du script pour cibler votre propre indexeur (ex : `https://lesite.domaine/*`)
-4. Pour avoir les notes TMDB sur les affiches, mettez votre [clé API TMDB](https://www.themoviedb.org/settings/api) (gratuite) dans le champ `const TMDB_API_KEY = '1234'; // Mettez votre clé ici !`
-3. Sauvegardez, activez le script
+1. **Installez [ViolentMonkey](https://violentmonkey.github.io/)** (ou [TamperMonkey](https://www.tampermonkey.net/), [GreaseMonkey](https://www.greasespot.net/)…)
+2. **Créez un nouveau script** et collez-y le contenu de `mode_affiches.js`
+3. **Activez le script**. Il détectera automatiquement s’il se trouve sur le bon indexeur (grâce à la collaboration avec le développeur)
+4. **Configurez** vos instances Radarr/Sonarr/4K si besoin, via le menu (aucune URL du site à renseigner)
 
 ---
 
-## 🖥️ Screenshots
+## 🖥️ Aperçu visuel
 
-![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/2.1.png)
-![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/3.1.png)
-![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/4.1.png)
-![Démo](https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/5.1.png)
+<div align="center">
+
+### Menu  
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/menu.1.0.png" alt="Démo Menu" width="600"/>
+
+</div>
+
+<div align="center">
+
+### Overlay  
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/overlay.1.0.png" alt="Démo Overlay 1" width="400"/>
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/overlay.1.1.png" alt="Démo Overlay 2" width="400"/>
+
+</div>
+
+<div align="center">
+
+### Affiches  
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/affiches.1.0.png" alt="Démo Affiches 1" width="400"/>
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/affiches.1.1.png" alt="Démo Affiches 2" width="400"/>
+
+</div>
+
+<div align="center">
+
+### Radarr  
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/radarr.1.0.png" alt="Démo Radarr 1" width="350"/>
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/radarr.1.1.png" alt="Démo Radarr 2" width="350"/>
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/radarr.1.2.png" alt="Démo Radarr 3" width="350"/>
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/radarr.1.3.png" alt="Démo Radarr 4" width="350"/>
+
+</div>
 
 ---
 
 ## 🧩 Détails techniques
 
-- **Vanilla JS** (pas de dépendances externes)
-- Overlay uniquement au clic (ergonomie : pas d’effet “polluant” au survol)
-- Regroupement des releases par titre (film ou série) depuis la page chargée, donc pas d'appel superflue au site
-- Icônes natives pour chaque release (signalement, téléchargement, panier, etc.)
+- **Vanilla JS** : Zéro dépendance externe
+- **Détection automatique du site** : Activation sans configuration d’URL
+- **Groupement local** : Toutes les opérations sont faites côté navigateur, jamais d’appel API “sauvage” à l’indexeur
+- **Overlay au clic** : Ergonomie optimale
+- **Mises à jour automatiques** : Pas besoin de surveiller GitHub, le script le fait pour vous
+
+---
+
+### ⚡ Pré-requis côté serveur : activer CORS pour votre domaine
+
+#### ▶️ Nginx Proxy Manager
+
+Dans l’onglet **Advanced** du proxy vers Overseerr/Jellyseerr, ajoutez (en adaptant l’URL de l’indexeur si besoin) : rempalcez `https://lesite.extension` par la vraie URL de l'indexeur et `ttp://192.168.0.195:5055` par l'IP et le port de l'application
+
+```nginx
+location /api/v1/ {
+    add_header 'Access-Control-Allow-Origin' 'https://lesite.extension' always;
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE' always;
+    add_header 'Access-Control-Allow-Headers' 'Authorization, X-Api-Key, Content-Type, Accept' always;
+    add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range' always;
+
+    if ($request_method = 'OPTIONS') {
+        add_header 'Access-Control-Allow-Origin' 'https://lesite.extension' always;
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE' always;
+        add_header 'Access-Control-Allow-Headers' 'Authorization, X-Api-Key, Content-Type, Accept' always;
+        add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range' always;
+        add_header 'Access-Control-Max-Age' 86400 always;
+        add_header 'Content-Type' 'text/plain charset=UTF-8' always;
+        add_header 'Content-Length' 0 always;
+        return 204;
+    }
+
+    proxy_pass http://192.168.0.195:5055;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/npm.1.0.png" alt="Démo NPM1 1" width="350"/>
+
+</div>
+
+#### ▶️ Traefik
+
+Dans la section `middlewares` de votre `docker-compose.yml` ou traefik config :
+
+```yaml
+  overseerr-cors:
+    headers:
+      accessControlAllowOriginList:
+        - "https://lesite.extension"
+      accessControlAllowMethods:
+        - "GET"
+        - "POST"
+        - "OPTIONS"
+        - "PUT"
+        - "DELETE"
+      accessControlAllowHeaders:
+        - "Authorization"
+        - "X-Api-Key"
+        - "Content-Type"
+        - "Accept"
+      accessControlExposeHeaders:
+        - "Content-Length"
+        - "Content-Range"
+      accessControlMaxAge: 86400
+      addVaryHeader: true
+```
+
+Ajoutez le middleware à votre service Overseerr/Jellyseerr :
+
+```yaml
+  labels:
+    - "traefik.http.routers.overseerr.middlewares=overseerr-cors@docker"
+```
+
+---
+
+> ⚠️ Si vous voyez un message “CORS error” dans la console navigateur :  
+> C’est la config proxy qui doit être adaptée (voir ci-dessus)
+> Un simple `curl` qui marche ne suffit pas, le navigateur exige un header CORS valide et un endpoint `OPTIONS` qui répond 204/200
 
 ---
 
 ## ❓ FAQ
 
-- **Le script ne fonctionne pas ?**  
-  Vérifiez le champ `@match` tout en haut du script : il doit correspondre à votre site.
-- **Je veux plus d’options !**  
-  Forkez le script ou ouvrez un ticket pour proposer vos idées.
-- **Vous constatez un bug ?**  
-  Fournissez un extrait du HTML concerné pour correction rapide.
+**Le script ne fonctionne pas ?**  
+Vérifiez que vous êtes bien sur les pages sur lesquelles il agit. Vérifiez que l'URL est bien détectée (et non bloquée par une extension de votre navigateur Internet)
+**Un bug ?**  
+Joignez un extrait HTML de la page pour correction express
 
+---
+
+## 💡 Idées pour les prochaines versions
+
+- **Section musique** : recherche sur Spotify, recherche par genres/artistes similaires, intégration de Lidarr
+- ... ?
 ---
 
 ## 🤝 Crédits
 
-Développé par [Aerya](https://github.com/Aerya) — libre d’utilisation et de modification du moment que la source est citée.  
-Toute contribution est la bienvenue !
+Développé par **[Aerya](https://github.com/Aerya)** — libre d’utilisation & de modification, avec mention de la source.  
 
 ---
