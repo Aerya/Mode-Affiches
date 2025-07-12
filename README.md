@@ -28,7 +28,11 @@ Encore un grand bravo & merci au développeur du site !
 
 ## 🆕 Journal des mises à jour
 
-### 6.24 (12/07/2025)
+### 6.26 (12/07/2025)
+- Correction overlay qui pouvait dépasser les dimensions du navigateur
+- Ajout de notes TMDB sur les affiches, en option
+
+### 6.25 (12/07/2025)
 - Correction bogue Bouton de menu
 
 ### 6.24 (12/07/2025)
@@ -55,10 +59,9 @@ Encore un grand bravo & merci au développeur du site !
 
 1. **Installez [Tampermonkey](https://www.tampermonkey.net/)** (ou équivalent : Violentmonkey, Greasemonkey)
 2. Créez un nouveau script et copiez-y le contenu de `mode_affiches.js`
+3. Modifiez le champ `@match` du script pour cibler votre propre indexeur (ex : `https://lesite.domaine/*`)
+4. Pour avoir les notes TMDB sur les affiches, mettez votre [clé API TMDB](https://www.themoviedb.org/settings/api) (gratuite) dans le champ `const TMDB_API_KEY = '1234'; // Mettez votre clé ici !`
 3. Sauvegardez, activez le script
-
-> **À adapter** :  
-> Modifiez le champ `@match` du script pour cibler votre propre indexeur (ex : `https://lesite.domaine/*`).
 
 ---
 
