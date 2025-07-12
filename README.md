@@ -98,6 +98,13 @@ Userscript avancé pour transformer la liste de releases sur un indexeur privé 
 
 </div>
 
+### Overseerr  
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/overseerr.1.0.png" alt="Démo Overseerr 1" width="350"/>
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/overseerr.1.1.png" alt="Démo Overseerr 2" width="350"/>
+<img src="https://raw.githubusercontent.com/Aerya/Mode-Affiches/refs/heads/main/Screens/overseerr.1.2.png" alt="Démo Overseerr 3" width="350"/>
+
+</div>
+
 ---
 
 ## 🧩 Détails techniques
