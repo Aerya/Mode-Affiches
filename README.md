@@ -5,7 +5,7 @@ Userscript pour transformer la liste de releases sur un indexeur privé en **gal
 Encore un grand bravo & merci au développeur du site !
 
 
-### A l'avenir, les mises à jour ne seront publiées que sur le Git fu site concerné afin de pouvoir mettre les URLs en clair ###
+### A l'avenir, les mises à jour ne seront publiées que sur le Git du site concerné afin de pouvoir mettre les URLs en clair ###
 
 
 
