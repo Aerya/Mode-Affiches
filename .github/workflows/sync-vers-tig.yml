@@ -1,0 +1,18 @@
+name: sync vers tig (HTTPS)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: sync vers tig (HTTPS)
+        env:
+          GITEA_URL: ${{ secrets.GITEA_URL }}
+        run: |
+          git remote add gitea "$GITEA_URL"
+          git push gitea HEAD:main --force
