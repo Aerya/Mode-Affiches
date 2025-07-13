@@ -1,0 +1,20 @@
+name: sync vers tig
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: sync vers tig
+        env:
+          GITEA_URL: ${{ secrets.GITEA_URL }}
+          GITEA_USER: ${{ secrets.GITEA_USER }}
+          GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+        run: |
+          git remote add gitea https://$GITEA_USER:$GITEA_TOKEN@${GITEA_URL#https://}
+          git push gitea HEAD:main --force
