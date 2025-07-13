@@ -38,6 +38,10 @@ Userscript avancé pour transformer la liste de releases sur un indexeur privé 
 
 ## 🆕 Journal des mises à jour
 
+**8.4.4 (13/07/2025)**
+
+- Correction & refonte MàJ auto
+
 **8.4.3 (12/07/2025)**
 
 - Ajout de la fonction d’auto-update discrète depuis tig. et GitHub
