@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         UseNet Enhanced (Overseerr/Jellyseerr TV Fix + Nouvel Onglet)
-// @version      8.4.4
+// @version      8.4.5
 // @date         13.07.25
 // @description  Galerie d'affiches, Radarr/Sonarr/Overseerr/Jellyseerr, badges TMDB/IMDB, options menu stables
 // @author       Aerya
@@ -587,7 +587,7 @@
     if (document.getElementById('affiche-mode-menu-container')) return;
     const box = Object.assign(document.createElement('div'), {
       id: 'affiche-mode-menu-container',
-      style: 'position:fixed;top:12px;right:12px;z-index:19999;background:#18181c;border:1px solid #444;border-radius:8px;padding:12px 18px 16px 18px;font-size:14px;box-shadow:0 2px 12px #000d;color:#fff;min-width:350px;'
+      style: 'position:fixed;top:60px;right:550px;z-index:19999;background:#18181c;border:1px solid #444;border-radius:8px;padding:12px 18px 16px 18px;font-size:14px;box-shadow:0 2px 12px #000d;color:#fff;min-width:350px;'
     });
     const toggle = Object.assign(document.createElement('button'), {
       textContent: '🎬 Mode Affiches Alternatif',

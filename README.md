@@ -45,10 +45,13 @@ Userscript avancé pour transformer la liste de releases sur un indexeur privé 
 
 ## 🆕 Journal des mises à jour
 
+**8.4.5 (13/07/2025)**
+
+- Amélioration de l'emplacement du menu
+
 **8.4.4 (13/07/2025)**
 
 - Correction & refonte MàJ auto
-- Synchronisation auto GitHub / Gitea (test 3)
 
 **8.4.3 (12/07/2025)**
 
