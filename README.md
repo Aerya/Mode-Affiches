@@ -3,7 +3,7 @@
 > 🚨 **Problème connu**  
 > L'option **Jellyseerr** est *temporairement hors service*.  
 > Je m'en occupe au plus vite pour un retour à la normale.  
-> Merci pour votre patience et votre soutien ! 🙏
+> Merci pour votre patience 
 
 
 
