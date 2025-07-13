@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         UseNet Enhanced (Overseerr/Jellyseerr TV Fix + Nouvel Onglet)
-// @version      8.4.3
-// @date         12.07.25
+// @version      8.4.4
+// @date         13.07.25
 // @description  Galerie d'affiches, Radarr/Sonarr/Overseerr/Jellyseerr, badges TMDB/IMDB, options menu stables
 // @author       Aerya
 // @match        *://*/*
@@ -14,11 +14,32 @@
   /* ==================================================================
    * 1.  AUTO‑UPDATE DISCRET MULTI-URL
    * ==================================================================*/
-  const LOCAL_VERSION      = '8.4.3';
-  const UPDATE_INTERVAL_MS = 12 * 60 * 60 * 1000;
-  const UPDATE_LS_KEY      = 'afficheLastUpdateCheck';
 
-  const UPDATE_URLS = [
+    function getLocalVersion() {
+    try {
+      let scriptText = document.currentScript?.text || '';
+      if (!scriptText) {
+        const scripts = document.querySelectorAll('script');
+        for (let s of scripts) {
+          if (s.textContent.includes('@name         UseNet Enhanced')) {
+            scriptText = s.textContent;
+            break;
+          }
+        }
+      }
+      const match = scriptText.match(/@version\s+([0-9]+(?:\.[0-9]+)*)/);
+      return match ? match[1] : null;
+    } catch {
+      return null;
+    }
+  }
+
+  const UPDATE_INTERVAL_MS = 12 * 60 * 60 * 1000;
+    const UPDATE_LS_KEY      = 'afficheLastUpdateCheck';
+
+    const LOCAL_VERSION = getLocalVersion() || '0.0.0';
+
+    const UPDATE_URLS = [
     `${location.protocol}//tig.${location.hostname}/Aerya/Mode-Affiches/raw/branch/main/mode_affiches.js`,
     'https://raw.githubusercontent.com/Aerya/Mode-Affiches/main/mode_affiches.js'
   ];
@@ -56,15 +77,17 @@
       const valid = results.filter(x => x && x.version && isNewer(x.version, LOCAL_VERSION));
       if (!valid.length) return;
       valid.sort((a, b) => {
-        const aV = a.version.split('.').map(Number);
-        const bV = b.version.split('.').map(Number);
-        for (let i = 0; i < Math.max(aV.length, bV.length); i++) {
-          if ((aV[i] || 0) > (bV[i] || 0)) return -1;
-          if ((aV[i] || 0) < (bV[i] || 0)) return 1;
-        }
-        return 0;
+      const aV = a.version.split('.').map(Number);
+      const bV = b.version.split('.').map(Number);
+      for (let i = 0; i < Math.max(aV.length, bV.length); i++) {
+      if ((aV[i] || 0) > (bV[i] || 0)) return -1;
+      if ((aV[i] || 0) < (bV[i] || 0)) return 1;
+      }
+      return 0;
       });
-      window.open(valid[0].url, '_blank');
+     // Juste prévenir discrètement sans ouvrir d’onglet
+     toast(`Nouvelle version dispo : ${valid[0].version} ! Actualise pour mettre à jour.`, 'success', 8000);
+
     });
   })();
 
