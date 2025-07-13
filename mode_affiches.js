@@ -86,7 +86,7 @@
       return 0;
       });
      // Juste prévenir discrètement sans ouvrir d’onglet
-     toast(`Nouvelle version dispo : ${valid[0].version} ! Actualise pour mettre à jour.`, 'success', 8000);
+     //toast(`Nouvelle version dispo : ${valid[0].version} ! Actualise pour mettre à jour.`, 'success', 8000);
 
     });
   })();
