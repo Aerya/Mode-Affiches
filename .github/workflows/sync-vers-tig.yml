@@ -16,9 +16,14 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.GITEA_SSH_KEY }}
 
+      - name: Test SSH connectivity
+        run: ssh -T -o StrictHostKeyChecking=no git@tig.unfr.pw || true
+
       - name: Push to Gitea
         env:
           GITEA_URL: ${{ secrets.GITEA_URL }}
         run: |
+          mkdir -p ~/.ssh
+          echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
           git remote add gitea "$GITEA_URL"
           git push gitea HEAD:main --force
