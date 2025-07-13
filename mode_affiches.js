@@ -14,7 +14,7 @@
   /* ==================================================================
    * 1.  AUTO‑UPDATE DISCRET MULTI-URL
    * ==================================================================*/
-  const LOCAL_VERSION      = '8.3.9'; // Mets ta version ici (à garder synchronisée)
+  const LOCAL_VERSION      = '8.4.3';
   const UPDATE_INTERVAL_MS = 12 * 60 * 60 * 1000;
   const UPDATE_LS_KEY      = 'afficheLastUpdateCheck';
 
