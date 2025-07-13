@@ -223,7 +223,9 @@ Joignez un extrait HTML de la page pour correction express
 ## 💡 Idées pour les prochaines versions
 
 - **Section musique** : recherche sur Spotify, recherche par genres/artistes similaires, intégration de Lidarr
-- ... ?
+- **Ajout client NZB** : SABnzbd et nzbGET
+- ...?
+
 ---
 
 ## 🤝 Crédits
